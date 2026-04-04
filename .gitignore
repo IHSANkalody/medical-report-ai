@@ -1,0 +1,19 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# models (VERY IMPORTANT)
+*.bin
+*.pt
+*.pth
+*.safetensors
+
+# data / outputs
+*.pdf
+*.wav
+*.mp3
+
+# huggingface cache
+.cache/
