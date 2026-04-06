@@ -40,7 +40,7 @@ def generate_medical_text(findings):
 # -----------------------------
 # Generate PDF
 # -----------------------------
-def generate_pdf(findings, filename="ultrasound_report.pdf"):
+def generate_pdf(findings, patient_name, age, gender, doctor_name, transcription, filename="ultrasound_report.pdf"):
 
     styles = getSampleStyleSheet()
 
@@ -83,12 +83,12 @@ def generate_pdf(findings, filename="ultrasound_report.pdf"):
     # -----------------------------
     # Patient Info
     # -----------------------------
-    patient_data = [
-        ["Patient Name", "Demo Patient", "Date", datetime.now().strftime("%d-%m-%Y")],
-        ["Age / Gender", "45 / Male", "Ref Doctor", "Dr. Example"]
-    ]
+    patient_table = [
+    ["Patient Name", str(patient_name if patient_name else "N/A"), "Date", datetime.now().strftime("%d-%m-%Y")],
+    ["Age / Gender", f"{age} / {gender}", "Doctor", doctor_name],
+]
 
-    table = Table(patient_data, colWidths=[100, 150, 100, 150])
+    table = Table(patient_table, colWidths=[100, 150, 100, 150])
     table.setStyle(TableStyle([
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
         ('BACKGROUND', (0,0), (-1,0), colors.lightgrey)
@@ -103,8 +103,9 @@ def generate_pdf(findings, filename="ultrasound_report.pdf"):
     elements.append(Paragraph("<b>FINDINGS:</b>", section_style))
     elements.append(Spacer(1, 0.1 * inch))
 
-    findings_text = generate_medical_text(findings)
-    elements.append(Paragraph(findings_text, styles["Normal"]))
+    full_report = generate_medical_text(findings) + "<br/><br/><b>Doctor Notes:</b><br/>" + transcription
+    elements.append(Paragraph(full_report, styles["Normal"]))
+    
     elements.append(Spacer(1, 0.3 * inch))
 
     # -----------------------------
